@@ -1,0 +1,35 @@
+{
+    "name": "ROS Melodic Dev",
+    "dockerFile": "../Dockerfile",
+    "context": "..",
+    "workspaceFolder": "/workspace",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "files.autoSave": "afterDelay",
+                "files.exclude": {
+                    "**/build": true,
+                    "**/devel": true
+                }
+            },
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-python.python",  
+                "ms-iot.vscode-ros", 
+                "eamodio.gitlens",   
+                "twxs.cmake"
+            ]
+        }
+    },
+    "remoteUser": "root",
+    "mounts": [
+        "source=${localWorkspaceFolder}/workspace,target=/workspace,type=bind"
+    ],
+    "runArgs": [
+        "--name", "ros-dev-container",
+        "--env", "DISPLAY=${env:DISPLAY}",
+        "--volume", "/tmp/.X11-unix:/tmp/.X11-unix:rw",
+        "--privileged"
+    ]
+}
