@@ -48,7 +48,7 @@ COPY workspace /workspace
 # Set up environment variables
 ENV ROS_DISTRO=melodic
 ENV ROS_VERSION=1
-
+ENV ROS_PYTHON_VERSION=3
 # Set TurtleBot3 model to burger by default
 ENV TURTLEBOT3_MODEL=burger
 
