@@ -67,6 +67,9 @@ services:
   ros-dev:
     image: ros-dev
     container_name: ros-dev
+    build:
+      context: .
+      dockerfile: Dockerfile
     stdin_open: true
     tty: true
     network_mode: host
@@ -91,4 +94,4 @@ EOF
 
 echo "[INFO] docker-compose.yml has been generated."
 echo "[INFO] You can now start the container with: docker compose up -d"
-echo "[INFO] Or for interactive shell: docker compose run ros-container bash"
+echo "[INFO] Or for interactive shell: docker compose run ros-dev bash"
