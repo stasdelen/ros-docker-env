@@ -1,5 +1,5 @@
-./docker/.env
-./docker/docker-compose.yml
+docker/.env
+docker/docker-compose.yml
 # Ignore contents of workspace
 workspace/*
 !workspace/.gitkeep
