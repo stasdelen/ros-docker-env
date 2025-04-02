@@ -1,3 +1,4 @@
+**/.env
 # Ignore contents of workspace
 workspace/*
 !workspace/.gitkeep
