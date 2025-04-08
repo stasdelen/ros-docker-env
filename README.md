@@ -40,3 +40,28 @@ make build
 make run
 ```
 
+## DevContainer Setup (.devcontainer)
+
+The `.devcontainer/` directory is designed to be used with [DevPod](https://www.devpod.sh/) or [VS Code DevContainers](https://containers.dev/). It provides configuration to automatically set up a development environment on top of the base Docker image.
+
+### Key Features
+
+- **Based on Docker Compose**  
+  The `devcontainer.json` references the Docker Compose setup (`../docker/docker-compose.yml`) and connects to the `ros-dev` service defined there.
+
+- **Dev Features**  
+  The container installs additional tools such as:
+  - GitHub CLI (allows you to be able to use you git account inside the container.)
+  - Node.js (v16) (You can remove this if you won't be using neovim.)
+  - A local custom feature (defined in `local-feature/`). I have installed neovim, fzf, installed python3.8 for LSP.
+
+- **Dotfiles Support**  
+  You can bootstrap your environment with your own dotfiles repository to personalize the development environment (shell, editor, aliases, etc.). Please don't forget to write an [installer script](https://devpod.sh/docs/developing-in-workspaces/dotfiles-in-a-workspace).
+
+### Usage with DevPod
+
+To spin up the environment using [DevPod](https://www.devpod.sh/), simply run:
+
+```bash
+devpod up . --dotfiles https://github.com/stasdelen/dotfiles
+```
