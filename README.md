@@ -63,5 +63,12 @@ The `.devcontainer/` directory is designed to be used with [DevPod](https://www.
 To spin up the environment using [DevPod](https://www.devpod.sh/), simply run:
 
 ```bash
-devpod up . --dotfiles https://github.com/stasdelen/dotfiles
+devpod up . --dotfiles https://github.com/${YOUR_USER_NAME_HERE}/dotfiles
 ```
+
+To stop the environment simply:
+
+```bash
+devpod stop ros-docker-env # Name of the parent folder
+```
+
