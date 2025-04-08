@@ -4,6 +4,8 @@ ARG USER_ID=1000
 ARG GROUP_ID=1000
 ARG USER_NAME=rosuser
 
+WORKDIR /workspace
+
 # Install additional dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
@@ -43,7 +45,6 @@ ENV TURTLEBOT3_MODEL=waffle
 RUN chown -R $USER_NAME:$GROUP_ID /workspace
 
 USER $USER_NAME
-WORKDIR /workspace
 
 RUN echo "source /opt/ros/melodic/setup.bash" >> /home/$USER_NAME/.bashrc && \
     echo "source /workspace/devel/setup.bash" >> /home/$USER_NAME/.bashrc
