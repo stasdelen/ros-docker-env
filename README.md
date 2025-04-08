@@ -56,7 +56,7 @@ The `.devcontainer/` directory is designed to be used with [DevPod](https://www.
   - A local custom feature (defined in `local-feature/`). I have installed neovim, fzf, installed python3.8 for LSP.
 
 - **Dotfiles Support**  
-  You can bootstrap your environment with your own dotfiles repository to personalize the development environment (shell, editor, aliases, etc.). Please don't forget to write an [installer script](https://devpod.sh/docs/developing-in-workspaces/dotfiles-in-a-workspace).
+  You can bootstrap your environment with your own dotfiles repository to personalize the development environment (shell, editor, aliases, etc.). Please don't forget to write an [installer script](https://devpod.sh/docs/developing-in-workspaces/dotfiles-in-a-workspace) (Here is [my dotfiles](https://github.com/stasdelen/dotfiles) in case you want to see an example.
 
 ### Usage with DevPod
 
