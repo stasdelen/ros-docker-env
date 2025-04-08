@@ -88,8 +88,7 @@ $NVIDIA_ENV
       - ${XDG_RUNTIME_DIR}:${XDG_RUNTIME_DIR}
       - ${XAUTH}:${XAUTH}:rw
       - /dev/dri:/dev/dri
-      - ../.:/home/rosuser/catkin_ws
-      - /home/rosuser/catkin_ws/docker
+      - ../workspace:/workspace
 $GPU_CONFIG
 
 EOF
