@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-melodic-amcl \
+    ros-melodic-navigation \
     ros-melodic-base-local-planner \
     ros-melodic-map-server \
     ros-melodic-move-base \
@@ -30,6 +31,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-melodic-gazebo-ros \
     ros-melodic-gazebo-plugins \
     ros-melodic-tf \ 
+    ros-melodic-fake-localization \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -g $GROUP_ID $USER_NAME && \
@@ -37,6 +39,11 @@ RUN groupadd -g $GROUP_ID $USER_NAME && \
     usermod -aG sudo $USER_NAME && \
     usermod -aG $GROUP_ID $USER_NAME && \
     echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    liblua5.1-0-dev \
+    lua5.1 \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN chown -R $USER_ID:$GROUP_ID /workspace
 
