@@ -72,3 +72,6 @@ To stop the environment simply:
 devpod stop ros-docker-env # Name of the parent folder
 ```
 
+## Using with VS Code
+
+Please checkout the [vscode](https://github.com/stasdelen/ros-docker-env/tree/vscode) branch and read the [Using with VS Code](https://github.com/stasdelen/ros-docker-env/wiki/Using-with-VS-Code) wiki page.
