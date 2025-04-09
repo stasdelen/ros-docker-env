@@ -8,6 +8,7 @@ sudo apt install -y fuse libfuse2 wget unzip
 
 sudo add-apt-repository ppa:deadsnakes/ppa -y
 sudo apt-get install -y python3.8 python3.8-venv
+sudo apt-get install -y python3-venv
 
 wget https://github.com/neovim/neovim-releases/releases/download/v0.11.0/nvim-linux-x86_64.appimage
 chmod a+x nvim-linux-x86_64.appimage 
