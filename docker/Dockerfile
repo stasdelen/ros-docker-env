@@ -38,11 +38,12 @@ RUN groupadd -g $GROUP_ID $USER_NAME && \
     usermod -aG $GROUP_ID $USER_NAME && \
     echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
+RUN chown -R $USER_ID:$GROUP_ID /workspace
+
 # Set up environment variables
 ENV ROS_DISTRO=melodic
 ENV ROS_VERSION=1
 ENV TURTLEBOT3_MODEL=waffle
-RUN chown -R $USER_NAME:$GROUP_ID /workspace
 
 USER $USER_NAME
 
