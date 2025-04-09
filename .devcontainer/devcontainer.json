@@ -9,4 +9,23 @@
         "ghcr.io/devcontainers/features/node:1": { "version": "16"},
         "./local-feature": {}
     },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "files.autoSave": "afterDelay",
+                "files.exclude": {
+                    "**/build": true,
+                    "**/devel": true
+                }
+            },
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-python.python",
+                "ms-iot.vscode-ros",
+                "eamodio.gitlens",
+                "twxs.cmake"
+            ]
+        }
+    },
 }
