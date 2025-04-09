@@ -2,7 +2,7 @@
     "name": "ROS Dev",
     "dockerComposeFile": "../docker/docker-compose.yml",
     "service": "ros-dev",
-    "workspaceFolder": "/home/rosuser",
+    "workspaceFolder": "/workspace",
     "remoteUser": "rosuser",
     "features": {
         "ghcr.io/devcontainers/features/github-cli:1": {},
