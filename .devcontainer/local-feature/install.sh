@@ -6,6 +6,10 @@ sudo apt-get update
 sudo apt-get install -y software-properties-common
 sudo apt install -y fuse libfuse2 wget unzip
 
+# Install xclip board for clipboard integration
+# Works only if X11 socket is mounted
+sudo apt-get install -y xclip
+
 sudo add-apt-repository ppa:deadsnakes/ppa -y
 sudo apt-get install -y python3.8 python3.8-venv
 sudo apt-get install -y python3-venv
