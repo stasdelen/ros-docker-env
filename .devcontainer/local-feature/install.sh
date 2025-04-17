@@ -10,6 +10,9 @@ sudo apt install -y fuse libfuse2 wget unzip
 # Works only if X11 socket is mounted
 sudo apt-get install -y xclip
 
+# Install less for better catting
+sudo apt-get install less
+
 sudo add-apt-repository ppa:deadsnakes/ppa -y
 sudo apt-get install -y python3.8 python3.8-venv
 sudo apt-get install -y python3-venv
