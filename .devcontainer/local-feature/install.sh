@@ -11,7 +11,7 @@ sudo apt install -y fuse libfuse2 wget unzip
 sudo apt-get install -y xclip
 
 # Install less for better catting
-sudo apt-get install less
+sudo apt-get install -y less
 
 # Install ranger as a terminal file manager
 sudo apt-get install -y ranger
