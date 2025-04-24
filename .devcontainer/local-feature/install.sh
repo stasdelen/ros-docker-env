@@ -13,6 +13,9 @@ sudo apt-get install -y xclip
 # Install less for better catting
 sudo apt-get install less
 
+# Install ranger as a terminal file manager
+sudo apt-get install -y ranger
+
 sudo add-apt-repository ppa:deadsnakes/ppa -y
 sudo apt-get install -y python3.8 python3.8-venv
 sudo apt-get install -y python3-venv
