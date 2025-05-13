@@ -5,7 +5,7 @@
     "workspaceFolder": "/workspace",
     "remoteUser": "rosuser",
     "features": {
-        "./local-feature": {},
+        "./local-feature": {}
     },
     "customizations": {
         "vscode": {
@@ -22,7 +22,7 @@
                 "ms-vscode.cpptools-extension-pack",
                 "ms-python.python",
                 "ms-iot.vscode-ros",
-                "ms-vscode.cmake-tools",
+                "ms-vscode.cmake-tools"
             ]
         }
     }
