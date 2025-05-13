@@ -21,6 +21,7 @@
                 "ms-vscode.cpptools",
                 "ms-vscode.cpptools-extension-pack",
                 "ms-python.python",
+                "ms-python.isort",
                 "ms-iot.vscode-ros",
                 "ms-vscode.cmake-tools"
             ]
