@@ -1,4 +1,4 @@
-FROM osrf/ros:melodic-desktop-full
+FROM osrf/ros:noetic-desktop-full
 
 ARG USER_ID=1000
 ARG GROUP_ID=1000
@@ -18,18 +18,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-melodic-amcl \
-    ros-melodic-base-local-planner \
-    ros-melodic-map-server \
-    ros-melodic-move-base \
-    ros-melodic-navfn \
-    ros-melodic-plotjuggler-ros \
-    ros-melodic-turtlebot3 \
-    ros-melodic-turtlebot3-simulations \
-    ros-melodic-turtlebot3-navigation \
-    ros-melodic-gazebo-ros \
-    ros-melodic-gazebo-plugins \
-    ros-melodic-tf \ 
+    ros-noetic-amcl \
+    ros-noetic-base-local-planner \
+    ros-noetic-map-server \
+    ros-noetic-move-base \
+    ros-noetic-navfn \
+    ros-noetic-plotjuggler-ros \
+    ros-noetic-turtlebot3 \
+    ros-noetic-turtlebot3-simulations \
+    ros-noetic-turtlebot3-navigation \
+    ros-noetic-gazebo-ros \
+    ros-noetic-gazebo-plugins \
+    ros-noetic-tf \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -g $GROUP_ID $USER_NAME && \
@@ -39,14 +39,14 @@ RUN groupadd -g $GROUP_ID $USER_NAME && \
     echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Set up environment variables
-ENV ROS_DISTRO=melodic
+ENV ROS_DISTRO=noetic
 ENV ROS_VERSION=1
 ENV TURTLEBOT3_MODEL=waffle
 RUN chown -R $USER_NAME:$GROUP_ID /workspace
 
 USER $USER_NAME
 
-RUN echo "source /opt/ros/melodic/setup.bash" >> /home/$USER_NAME/.bashrc && \
+RUN echo "source /opt/ros/noetic/setup.bash" >> /home/$USER_NAME/.bashrc && \
     echo "source /workspace/devel/setup.bash" >> /home/$USER_NAME/.bashrc
 
 # Expose ROS master port and Gazebo ports
