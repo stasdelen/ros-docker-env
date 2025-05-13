@@ -8,6 +8,9 @@
       "includePath": [
         "/workspace/devel/include/**",
         "/opt/ros/melodic/include/**",
+        "/opt/ros/melodic/share/**",
+        "/opt/ros/melodic/lib/**",
+        "/opt/ros/melodic/lib64/**",
         "/usr/include/**"
       ],
       "name": "ROS",
