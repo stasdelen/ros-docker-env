@@ -7,13 +7,14 @@
       },
       "includePath": [
         "/workspace/devel/include/**",
-        "/opt/ros/melodic/include/**",
-        "/opt/ros/melodic/share/**",
-        "/opt/ros/melodic/lib/**",
-        "/opt/ros/melodic/lib64/**",
+        "/opt/ros/noetic/include/**",
+        "/opt/ros/noetic/share/**",
+        "/opt/ros/noetic/lib/**",
+        "/opt/ros/noetic/lib64/**",
         "/usr/include/**"
       ],
       "name": "ROS",
+      "compileCommands": "/workspace/devel/compile_commands.json",
       "intelliSenseMode": "gcc-x64",
       "compilerPath": "/usr/bin/gcc",
       "cStandard": "gnu11",
