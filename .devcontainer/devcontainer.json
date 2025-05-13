@@ -5,9 +5,7 @@
     "workspaceFolder": "/workspace",
     "remoteUser": "rosuser",
     "features": {
-        "ghcr.io/devcontainers/features/github-cli:1": {},
-        "ghcr.io/devcontainers/features/node:1": { "version": "16"},
-        "./local-feature": {}
+        "./local-feature": {},
     },
     "customizations": {
         "vscode": {
