@@ -19,10 +19,10 @@
             },
             "extensions": [
                 "ms-vscode.cpptools",
+                "ms-vscode.cpptools-extension-pack",
                 "ms-python.python",
                 "ms-iot.vscode-ros",
-                "eamodio.gitlens",
-                "twxs.cmake"
+                "ms-vscode.cmake-tools",
             ]
         }
     }
