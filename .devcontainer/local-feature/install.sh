@@ -24,5 +24,5 @@ wget https://github.com/neovim/neovim-releases/releases/download/v0.11.0/nvim-li
 chmod a+x nvim-linux-x86_64.appimage 
 sudo mv nvim-linux-x86_64.appimage /usr/bin/nvim
 
-su rosuser -c "git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf"
-su rosuser -c "~/.fzf/install --key-bindings --completion --update-rc"
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install --key-bindings --completion --update-rc
