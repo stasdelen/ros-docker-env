@@ -1,5 +1,11 @@
+# Ignore the env file
 docker/.env
-docker/docker-compose.yml
 # Ignore contents of workspace
 workspace/*
-!workspace/.gitkeep
+!workspace/Makefile
+# Ignore contents of config
+config/*
+!config/config
+config/config/*
+!config/config/.gitkeep
+!config/local.yaml
