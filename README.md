@@ -1,82 +1,96 @@
 # ros-docker-env
-This repository implements a ROS Docker+Devpod Development Environement with Desktop GUI Support.
 
-## Docker
+This repository implements a Docker-based ROS (ROS 1 Melodic) development environment with GUI support, DevContainer/DevPod integrations, and a ready-to-use catkin workspace helper Makefile.
 
-The `docker/` directory contains the core files necessary to build and manage a development environment using Docker and Docker Compose. This setup is designed for GPU-enabled systems and supports X11 GUI forwarding, making it suitable for simulation and visualization tools like Gazebo and RViz.
+## Prerequisites
 
-### Contents
+- Docker with access to the host X11 socket for GUI forwarding.
+- Optional: NVIDIA Container Toolkit if you plan to use the GPU compose file.
+- DevPod or VS Code (for DevContainer workflows).
 
-- **Dockerfile**  
+## Quickstart: Build and Run
 
-    Defines the ROS development image based on `osrf/ros:melodic-desktop-full`. It installs common ROS navigation and simulation packages such as `turtlebot3`, `gazebo`, and `move_base`. It also sets up a non-root user (`rosuser`) and configures environment variables needed for development.
-
-    ⚠️ Please note that the this container is just an example an can be configured for your needs. I just installed example stuff to be able to test the environment. However, you have to add the user (`rosuser`) in order to be able to use GUI related stuff securely. It uses `Xauth` to authorize the connection to the X server, rather than exposing X server to network causing security risks.
-
-- **generate-compose.bash**  
-  A utility script that generates a `docker-compose.yml` file dynamically. It:
-  - Configures X11 and XAuth for GUI forwarding.
-  - Detects GPU hardware and sets up appropriate Docker runtime flags (e.g., NVIDIA).
-  - If no NVIDIA GPU is detected, the container automatically falls back to CPU-based rendering to ensure compatibility.
-  - Mounts required host directories including `/workspace`, `/tmp/.X11-unix`, and runtime paths.
-
-- **Makefile**  
-  Provides convenience commands to streamline common Docker workflows:
-  - `make compose` – Generates the docker-compose file.
-  - `make build` – Builds the Docker image.
-  - `make run` – Runs the container with display forwarding and GPU support.
-  - `make attach` – Attaches an interactive shell to the running container.
-  - `make stop` – Stops the container.
-  - `make env` – Creates a `.env` file with user and group IDs for proper permission mapping inside the container.
-
-### Usage
-
-To set up and launch the ROS development container:
+The compose files live in `docker/` and mount the repo `workspace/` into the container at `/root/ws`.
 
 ```bash
-make env
-make compose
-make build
-make run
+# CPU-only (default)
+docker compose -f docker/docker-compose.yml build
+docker compose -f docker/docker-compose.yml up -d
+
+# GPU-enabled (requires NVIDIA runtime)
+docker compose -f docker/docker-compose.gpu.yml build
+docker compose -f docker/docker-compose.gpu.yml up -d
 ```
 
-## DevContainer Setup (.devcontainer)
+Both compose files forward the host X11 socket, `/dev`, and a local `config/` directory so GUI tools like RViz and Gazebo can run inside the container.【F:docker/docker-compose.yml†L1-L24】【F:docker/docker-compose.gpu.yml†L1-L28】
 
-The `.devcontainer/` directory is designed to be used with [DevPod](https://www.devpod.sh/) or [VS Code DevContainers](https://containers.dev/). It provides configuration to automatically set up a development environment on top of the base Docker image.
-
-### Key Features
-
-- **Based on Docker Compose**  
-  The `devcontainer.json` references the Docker Compose setup (`../docker/docker-compose.yml`) and connects to the `ros-dev` service defined there.
-
-- **Dev Features**  
-  The container installs additional tools such as:
-  - GitHub CLI (allows you to be able to use you git account inside the container.)
-  - Node.js (v16) (You can remove this if you won't be using neovim.)
-  - A local custom feature (defined in `local-feature/`). I have installed neovim, fzf, installed python3.8 for LSP.
-
-- **Dotfiles Support**  
-  You can bootstrap your environment with your own dotfiles repository to personalize the development environment (shell, editor, aliases, etc.). Please don't forget to write an [installer script](https://devpod.sh/docs/developing-in-workspaces/dotfiles-in-a-workspace).
-
-### Usage with DevPod
-
-To spin up the environment using [DevPod](https://www.devpod.sh/), simply run:
+Attach to the running container:
 
 ```bash
-devpod up . --dotfiles https://github.com/${YOUR_USER_NAME_HERE}/dotfiles
+docker exec -it ros-dev bash
 ```
 
-To stop the environment simply:
+Stop and remove the container when you're done:
 
 ```bash
-devpod stop ros-docker-env # Name of the parent folder
+docker compose -f docker/docker-compose.yml down
+# or docker compose -f docker/docker-compose.gpu.yml down
 ```
 
-To run with your favourite IDE just add a flag specifying that:
+## Modifying the Environment
+
+- **Base image**: Change `BASE_IMAGE` in `docker/Dockerfile` to another ROS desktop image (e.g., newer ROS distributions).【F:docker/Dockerfile†L1-L3】
+- **Packages and tools**: Add/remove apt packages in the two install blocks to customize debugging, visualization, or ROS utilities.【F:docker/Dockerfile†L7-L23】
+- **Shell tools and Neovim**: Update `image_scripts/install_dev_env.sh` if you want to change the bundled dotfiles, Neovim installation, or extra CLI utilities.【F:image_scripts/install_dev_env.sh†L1-L37】
+- **Workspace mount**: Adjust the volumes in the compose files if your ROS workspace lives elsewhere or if you want to mount additional host folders (e.g., datasets).【F:docker/docker-compose.yml†L17-L24】
+
+## DevContainer and DevPod
+
+- The root `.devcontainer/devcontainer.json` points to the compose service `ros-dev` and uses `/root` as the workspace folder, so VS Code or DevPod reuses the same container defined above.【F:.devcontainer/devcontainer.json†L1-L7】
+- A local feature (`.devcontainer/local-feature`) installs Neovim, FZF, Python 3.8, and convenience tools when building via DevContainers.【F:.devcontainer/local-feature/install.sh†L1-L27】
+
+### Launch with DevPod
 
 ```bash
-devpod up . --ide zed 
-```
-## Using with VS Code
+devpod up . --dotfiles https://github.com/<YOUR_USER>/dotfiles
+# specify an IDE, e.g. Zed
+devpod up . --ide zed
 
-Please checkout the [vscode](https://github.com/stasdelen/ros-docker-env/tree/vscode) branch and read the [Using with VS Code](https://github.com/stasdelen/ros-docker-env/wiki/Using-with-VS-Code) wiki page.
+# stop the environment (the name defaults to the parent folder)
+devpod stop ros-docker-env
+```
+
+### Using VS Code Dev Containers
+
+Open the folder in VS Code and choose **Reopen in Container**. Ensure Docker is running locally; VS Code will build the image using `docker/docker-compose.yml` and attach to the `ros-dev` service.
+
+## Bash Aliases and Helper Functions
+
+The image copies `image_scripts/.bash_aliases` into the container and enables it via `.bashrc`. Key helpers include:
+
+- `set_ros_master <host> [port]` – Point to a remote or local ROS master (defaults to `localhost:11311`).【F:image_scripts/.bash_aliases†L4-L20】
+- `rviz_namespaced <config> <namespace>` / `rqt_namespaced <namespace>` – Launch RViz/RQT with TF and topics remapped to a namespace.【F:image_scripts/.bash_aliases†L22-L59】
+- `kill_sim` and `killgazeboros` – Quickly terminate gazebo/ros processes from the shell.【F:image_scripts/.bash_aliases†L61-L67】
+- `build_release` / `build_debug` – Shorthand for `catkin_make_isolated` with sensible defaults for Release or Debug builds.【F:image_scripts/.bash_aliases†L69-L93】
+- `gen_compile_db` – Merge `compile_commands.json` files from `build_isolated` into a single database at the workspace root for better editor integration.【F:image_scripts/.bash_aliases†L95-L115】
+
+## ROS Workspace Make Targets
+
+Inside the mounted `workspace/` folder you'll find a `Makefile` that wraps `catkin_make_isolated` and `catkin_make`:
+
+- `make isolated <pkg1> [pkg2 …]` – Release isolated build of packages and dependencies.
+- `make isolated_debug <pkg1> [pkg2 …]` – Debug isolated build.
+- `make release <pkg1> [pkg2 …]` – Release build using `catkin_make` with installs enabled.【F:workspace/Makefile†L1-L40】
+
+Run these commands from `/root/ws` inside the container. Each target requires at least one package name and emits usage help if none is provided.
+
+## GUI Usage Tips
+
+- Ensure your host X server allows local connections (e.g., `xhost +local:`) before starting the container.
+- The compose files mount `/tmp/.X11-unix` and forward `DISPLAY`/`XDG_RUNTIME_DIR` so RViz, Gazebo, and PlotJuggler work out of the box.
+
+## Troubleshooting
+
+- If GUI applications fail, verify `DISPLAY` and `XDG_RUNTIME_DIR` match your host values and that the X11 socket is mounted.
+- For GPU issues, confirm `nvidia-smi` works on the host and that the NVIDIA Container Toolkit is installed.
+
