@@ -5,24 +5,30 @@ This repository implements a Docker-based ROS (ROS 1 Melodic) development enviro
 ## Prerequisites
 
 - Docker with access to the host X11 socket for GUI forwarding.
-- Optional: NVIDIA Container Toolkit if you plan to use the GPU compose file.
+- Optional: NVIDIA Container Toolkit if you plan to use the GPU profile.
 - DevPod or VS Code (for DevContainer workflows).
 
 ## Quickstart: Build and Run
 
-The compose files live in `docker/` and mount the repo `workspace/` into the container at `/root/ws`.
+The compose file lives in `docker/` and mounts the repo `workspace/` into the container at `/root/ws`.
 
 ```bash
-# CPU-only (default)
+cp docker/.env.example docker/.env   # set COMPOSE_PROFILES=cpu (default) or gpu
 docker compose -f docker/docker-compose.yml build
 docker compose -f docker/docker-compose.yml up -d
-
-# GPU-enabled (requires NVIDIA runtime)
-docker compose -f docker/docker-compose.gpu.yml build
-docker compose -f docker/docker-compose.gpu.yml up -d
 ```
 
-Both compose files forward the host X11 socket, `/dev`, and a local `config/` directory so GUI tools like RViz and Gazebo can run inside the container.【F:docker/docker-compose.yml†L1-L24】【F:docker/docker-compose.gpu.yml†L1-L28】
+Set `COMPOSE_PROFILES=gpu` in `docker/.env` to use the NVIDIA runtime; otherwise `cpu` is assumed. With the profile set in `.env`, you can keep running `docker compose ...` without extra flags. The compose file forwards the host X11 socket, `/dev`, and a local `config/` directory so GUI tools like RViz and Gazebo can run inside the container.【F:docker/docker-compose.yml†L1-L50】
+
+### Selecting CPU vs GPU
+
+Choose the runtime profile in `docker/.env` (defaults to CPU):
+
+```bash
+COMPOSE_PROFILES=cpu  # or gpu
+```
+
+When set to `gpu`, the `ros-dev-gpu` profile enables NVIDIA device reservations while keeping the container name `ros-dev`.
 
 Attach to the running container:
 
@@ -34,7 +40,6 @@ Stop and remove the container when you're done:
 
 ```bash
 docker compose -f docker/docker-compose.yml down
-# or docker compose -f docker/docker-compose.gpu.yml down
 ```
 
 ## Modifying the Environment
@@ -42,7 +47,7 @@ docker compose -f docker/docker-compose.yml down
 - **Base image**: Change `BASE_IMAGE` in `docker/Dockerfile` to another ROS desktop image (e.g., newer ROS distributions).【F:docker/Dockerfile†L1-L3】
 - **Packages and tools**: Add/remove apt packages in the two install blocks to customize debugging, visualization, or ROS utilities.【F:docker/Dockerfile†L7-L23】
 - **Shell tools and Neovim**: Update `image_scripts/install_dev_env.sh` if you want to change the bundled dotfiles, Neovim installation, or extra CLI utilities.【F:image_scripts/install_dev_env.sh†L1-L37】
-- **Workspace mount**: Adjust the volumes in the compose files if your ROS workspace lives elsewhere or if you want to mount additional host folders (e.g., datasets).【F:docker/docker-compose.yml†L17-L24】
+- **Workspace mount**: Adjust the volumes in the compose file if your ROS workspace lives elsewhere or if you want to mount additional host folders (e.g., datasets).【F:docker/docker-compose.yml†L22-L28】
 
 ## DevContainer and DevPod
 
@@ -87,10 +92,9 @@ Run these commands from `/root/ws` inside the container. Each target requires at
 ## GUI Usage Tips
 
 - Ensure your host X server allows local connections (e.g., `xhost +local:`) before starting the container.
-- The compose files mount `/tmp/.X11-unix` and forward `DISPLAY`/`XDG_RUNTIME_DIR` so RViz, Gazebo, and PlotJuggler work out of the box.
+- The compose file mounts `/tmp/.X11-unix` and forwards `DISPLAY`/`XDG_RUNTIME_DIR` so RViz, Gazebo, and PlotJuggler work out of the box.
 
 ## Troubleshooting
 
 - If GUI applications fail, verify `DISPLAY` and `XDG_RUNTIME_DIR` match your host values and that the X11 socket is mounted.
 - For GPU issues, confirm `nvidia-smi` works on the host and that the NVIDIA Container Toolkit is installed.
-
