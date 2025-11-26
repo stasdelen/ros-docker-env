@@ -17,6 +17,31 @@ function set_ros_master() {
     fi
 }
 
+function set_ros_port() {
+    if [ -z "$1" ]; then
+        echo "Usage: set_ros_port <port>"
+        echo "Example: set_ros_port 11311"
+        return 1
+    fi
+
+    if [ -z "${ROS_MASTER_URI:-}" ]; then
+        echo "Error: ROS_MASTER_URI is not set. Set it first with set_ros_master."
+        return 1
+    fi
+
+    local port="$1"
+    local host
+    host=$(echo "$ROS_MASTER_URI" | sed -E 's#^https?://([^:/]+).*#\1#')
+
+    if [ -z "$host" ]; then
+        echo "Error: Could not parse host from ROS_MASTER_URI ($ROS_MASTER_URI)"
+        return 1
+    fi
+
+    export ROS_MASTER_URI=http://$host:$port
+    echo "ROS_MASTER_URI updated to: $ROS_MASTER_URI"
+}
+
 # --- Rviz with Namespace ---
 function rviz_namespaced() {
     local config_file="$1"
@@ -126,5 +151,4 @@ function gen_compile_db() {
 
     echo "Success! Generated compile_commands.json with $entries entries."
 }
-
 
