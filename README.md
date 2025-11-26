@@ -46,7 +46,7 @@ docker compose -f docker/docker-compose.yml down
 
 - **Base image**: Change `BASE_IMAGE` in `docker/Dockerfile` to another ROS desktop image (e.g., newer ROS distributions).【F:docker/Dockerfile†L1-L3】
 - **Packages and tools**: Add/remove apt packages in the two install blocks to customize debugging, visualization, or ROS utilities.【F:docker/Dockerfile†L7-L23】
-- **Shell tools and Neovim**: Update `image_scripts/install_dev_env.sh` if you want to change the bundled dotfiles, Neovim installation, or extra CLI utilities.【F:image_scripts/install_dev_env.sh†L1-L37】
+- **Dev tooling (Neovim/dotfiles)**: Set `INSTALL_DEV_ENV=true` in `docker/.env` to include the Neovim, FZF, and personal dotfiles setup during the Docker build, or `false` to skip it and keep the image lean.【F:docker/.env†L1-L3】【F:docker/Dockerfile†L6-L58】【F:docker/docker-compose.yml†L3-L45】
 - **Workspace mount**: Adjust the volumes in the compose file if your ROS workspace lives elsewhere or if you want to mount additional host folders (e.g., datasets).【F:docker/docker-compose.yml†L22-L28】
 
 ## DevContainer and DevPod
