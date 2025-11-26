@@ -8,6 +8,7 @@ x-ros-dev-common: &ros-dev-common
     dockerfile: docker/Dockerfile
     args:
       BASE_IMAGE: ${BASE_IMAGE:-osrf/ros:melodic-desktop-full}
+      INSTALL_DEV_ENV: ${INSTALL_DEV_ENV:-false}
   privileged: true
   network_mode: host
   ipc: host
