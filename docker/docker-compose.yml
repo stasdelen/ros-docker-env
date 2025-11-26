@@ -1,29 +1,50 @@
-# CPU docker compose file.
+# Unified docker compose file. Select CPU or GPU runtime via COMPOSE_PROFILES in docker/.env (cpu default).
+
+x-ros-dev-common: &ros-dev-common
+  image: ros-dev
+  container_name: ros-dev
+  build:
+    context: ../
+    dockerfile: docker/Dockerfile
+    args:
+      BASE_IMAGE: ${BASE_IMAGE:-osrf/ros:melodic-desktop-full}
+  privileged: true
+  network_mode: host
+  ipc: host
+  stdin_open: true
+  tty: true
+  command: ["tail", "-f", "/dev/null"]
+  environment: &ros-dev-env
+    DISPLAY: ${DISPLAY}
+    QT_X11_NO_MITSHM: "1"
+    QT_QPA_PLATFORM: xcb
+    XDG_RUNTIME_DIR: ${XDG_RUNTIME_DIR:-/run/user/$(id -u)}
+  volumes:
+    - /tmp/.X11-unix:/tmp/.X11-unix
+    - ${XDG_RUNTIME_DIR}:${XDG_RUNTIME_DIR}
+    - /dev:/dev
+    - ../workspace:/root/ws
+    - ../config/config:/root/config
+    - ../config/local.yaml:/etc/ros/local.yaml
+
 services:
   ros-dev:
-    image: ros-dev
-    container_name: ros-dev
-    build:
-      context: ../
-      dockerfile: docker/Dockerfile
-      args:
-        BASE_IMAGE: ${BASE_IMAGE:-osrf/ros:melodic-desktop-full}
-    privileged: true
-    network_mode: host
-    ipc: host
-    stdin_open: true
-    tty: true
-    command: ["tail", "-f", "/dev/null"]
-    environment:
-      - DISPLAY=${DISPLAY}
-      - QT_X11_NO_MITSHM=1
-      - QT_QPA_PLATFORM=xcb
-      - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-/run/user/$(id -u)}
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - ${XDG_RUNTIME_DIR}:${XDG_RUNTIME_DIR}
-      - /dev:/dev
-      - ../workspace:/root/ws
-      - ../config/config:/root/config
-      - ../config/local.yaml:/etc/ros/local.yaml
+    <<: *ros-dev-common
+    profiles: ["cpu"]
 
+  ros-dev-gpu:
+    <<: *ros-dev-common
+    profiles: ["gpu"]
+    environment:
+      <<: *ros-dev-env
+      NVIDIA_DRIVER_CAPABILITIES: all
+      NVIDIA_VISIBLE_DEVICES: all
+      __NV_PRIME_RENDER_OFFLOAD: "1"
+      __GLX_VENDOR_LIBRARY_NAME: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
