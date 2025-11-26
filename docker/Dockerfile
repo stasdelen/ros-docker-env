@@ -26,13 +26,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-melodic-foxglove-bridge \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+COPY image_scripts/install_dev_env.sh /install_dev_env.sh
+RUN /bin/bash -c "/install_dev_env.sh"
+
 COPY image_scripts/.bash_aliases /root/.bash_aliases
 RUN echo "if [ -f /root/.bash_aliases ]; then . /root/.bash_aliases; fi" >> /root/.bashrc
 
 RUN echo "source /opt/ros/melodic/setup.bash" >> /root/.bashrc
-
-COPY image_scripts/install_dev_env.sh /install_dev_env.sh
-RUN /bin/bash -c "/install_dev_env.sh"
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
 
