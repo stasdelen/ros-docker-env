@@ -24,7 +24,7 @@ x-ros-dev-common: &ros-dev-common
     - /tmp/.X11-unix:/tmp/.X11-unix
     - ${XDG_RUNTIME_DIR}:${XDG_RUNTIME_DIR}
     - /dev:/dev
-    - ../workspace:/root/ws
+    - ${WS_PATH:?set WS_PATH}:/root/ws:rw
     - ../config/config:/root/config
     - ../config/local.yaml:/etc/ros/local.yaml
 
