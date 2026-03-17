@@ -45,13 +45,15 @@ RUN if [ "${INSTALL_DEV_ENV}" = "true" ]; then \
 
 # Install neovim
 RUN if [ "${INSTALL_DEV_ENV}" = "true" ]; then \
-    curl -Lo /tmp/nvim.appimage https://github.com/neovim/neovim-releases/releases/download/v0.11.0/nvim-linux-x86_64.appimage; \
-    chmod +x /tmp/nvim.appimage; \
-    cd /tmp; \
-    ./nvim.appimage --appimage-extract; \
-    mv squashfs-root /opt/nvim; \
-    ln -s /opt/nvim/AppRun /usr/bin/nvim; \
-    rm /tmp/nvim.appimage; \
+    curl -Lo /tmp/nvim.tar.gz https://github.com/neovim/neovim-releases/releases/download/v0.11.6/nvim-linux-x86_64.tar.gz; \
+    rm -rf /opt/nvim; \
+    mkdir -p /opt; \
+    tar -C /opt -xzf /tmp/nvim.tar.gz; \
+    mv /opt/nvim-linux-x86_64 /opt/nvim; \
+    ln -sf /opt/nvim/bin/nvim /usr/bin/nvim; \
+    rm /tmp/nvim.tar.gz; \
+    command -v nvim; \
+    nvim --version; \
   fi
 
 # Install dotfiles
