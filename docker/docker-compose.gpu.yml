@@ -1,0 +1,40 @@
+services:
+  ros-dev-lsp:
+    image: ros-dev
+    container_name: ros-dev
+    platform: linux/amd64
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+      args:
+        BASE_IMAGE: ${BASE_IMAGE:-osrf/ros:melodic-desktop-full}
+        INSTALL_DEV_ENV: ${INSTALL_DEV_ENV:-false}
+    privileged: true
+    network_mode: host
+    ipc: host
+    stdin_open: true
+    tty: true
+    command: ["tail", "-f", "/dev/null"]
+    volumes:
+      - ${WS_PATH:?set WS_PATH}:/root/ws:rw
+      - ../config/config:/root/config
+      - ../config/local.yaml:/etc/ros/local.yaml
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ${XDG_RUNTIME_DIR}:${XDG_RUNTIME_DIR}
+      - /dev:/dev
+    environment:
+      DISPLAY: ${DISPLAY}
+      QT_X11_NO_MITSHM: "1"
+      QT_QPA_PLATFORM: xcb
+      XDG_RUNTIME_DIR: ${XDG_RUNTIME_DIR:-/run/user/$(id -u)}
+      NVIDIA_DRIVER_CAPABILITIES: all
+      NVIDIA_VISIBLE_DEVICES: all
+      __NV_PRIME_RENDER_OFFLOAD: "1"
+      __GLX_VENDOR_LIBRARY_NAME: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

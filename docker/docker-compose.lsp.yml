@@ -1,0 +1,21 @@
+services:
+  ros-dev-lsp:
+    image: ros-dev
+    container_name: ros-dev
+    platform: linux/amd64
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+      args:
+        BASE_IMAGE: ${BASE_IMAGE:-osrf/ros:melodic-desktop-full}
+        INSTALL_DEV_ENV: ${INSTALL_DEV_ENV:-false}
+    privileged: true
+    network_mode: host
+    ipc: host
+    stdin_open: true
+    tty: true
+    command: ["tail", "-f", "/dev/null"]
+    volumes:
+      - ${WS_PATH:?set WS_PATH}:/root/ws:rw
+      - ../config/config:/root/config
+      - ../config/local.yaml:/etc/ros/local.yaml
