@@ -5,7 +5,7 @@ WORKDIR /root/ws
 
 ARG INSTALL_DEV_ENV=true
 
-# Install additional dependencies
+# Install essential build tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
     jq  \
     git \
@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Install visualization tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-melodic-plotjuggler-ros \
     ros-melodic-rviz \
@@ -32,6 +33,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN if [ "${INSTALL_DEV_ENV}" = "true" ]; then \
     apt-get update; \
     apt-get install -y --no-install-recommends software-properties-common fuse libfuse2 curl unzip xclip less; \
+    apt-get clean && rm -rf /var/lib/apt/lists/*; \
   else \
     echo "Skipping dev environment install (INSTALL_DEV_ENV=${INSTALL_DEV_ENV})"; \
   fi
@@ -41,6 +43,7 @@ RUN if [ "${INSTALL_DEV_ENV}" = "true" ]; then \
     add-apt-repository ppa:deadsnakes/ppa -y; \
     apt-get update; \
     apt-get install -y --no-install-recommends python3.8 python3.8-venv python3-venv; \
+    apt-get clean && rm -rf /var/lib/apt/lists/*; \
   fi
 
 # Install neovim
@@ -58,7 +61,7 @@ RUN if [ "${INSTALL_DEV_ENV}" = "true" ]; then \
 
 # Install dotfiles
 RUN if [ "${INSTALL_DEV_ENV}" = "true" ]; then \
-    git clone https://github.com/stasdelen/dotfiles.git /root/dotfiles; \
+    git clone --resursive https://github.com/stasdelen/dotfiles.git /root/dotfiles; \
     chmod a+x /root/dotfiles/install.sh; \
     /root/dotfiles/install.sh; \
   fi
@@ -77,16 +80,7 @@ RUN if [ "${INSTALL_DEV_ENV}" = "true" ]; then \
     nvim --headless "+TSUpdateSync" +qa; \
   fi
 
-# Install additinal deps
-RUN if [ "${INSTALL_DEV_ENV}" = "true" ]; then \
-    apt-get update; \
-    apt-get install -y --no-install-recommends libompl-dev; \
-  fi
-
-RUN if [ "${INSTALL_DEV_ENV}" = "true" ]; then \
-    apt-get clean && rm -rf /var/lib/apt/lists/*; \
-  fi
-
+# Copy some usefull aliases
 COPY image_scripts/.bash_aliases /root/.bash_aliases
 RUN echo "if [ -f /root/.bash_aliases ]; then . /root/.bash_aliases; fi" >> /root/.bashrc
 
