@@ -1,7 +1,7 @@
 {
-    "name": "ROS Dev",
-    "dockerComposeFile": "../docker/docker-compose.yml",
-    "service": "ros-dev",
-    "workspaceFolder": "/root",
-    "remoteUser": "root",
+  "name": "ROS Dev",
+  "dockerComposeFile": "../docker/docker-compose.yml",
+  "service": "ros-dev",
+  "workspaceFolder": "/root/ws",
+  "remoteUser": "root",
 }
