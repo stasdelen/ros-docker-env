@@ -1,5 +1,7 @@
 # Ignore the env file
 docker/.env
+# Ignore generated compile_commands.json at repo root (host-side, for Serena/clangd)
+compile_commands.json
 # Ignore contents of workspace
 workspace/*
 !workspace/Makefile
