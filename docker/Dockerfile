@@ -18,6 +18,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Install clang tools (clangd for LSP, clang-format for formatting)
+RUN apt-get update && apt-get install -y --no-install-recommends gnupg wget \
+    && wget -qO - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - \
+    && echo "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-14 main" > /etc/apt/sources.list.d/llvm-14.list \
+    && apt-get update && apt-get install -y --no-install-recommends \
+    clangd-14 \
+    clang-format-14 \
+    && ln -sf /usr/bin/clangd-14 /usr/bin/clangd \
+    && ln -sf /usr/bin/clang-format-14 /usr/bin/clang-format \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Install visualization tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-melodic-plotjuggler-ros \
