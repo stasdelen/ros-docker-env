@@ -70,17 +70,20 @@ RUN if [ "${INSTALL_DEV_ENV}" = "true" ]; then \
     nvim --version; \
   fi
 
-# Install dotfiles
-RUN if [ "${INSTALL_DEV_ENV}" = "true" ]; then \
-    git clone --recurse-submodules https://github.com/stasdelen/dotfiles.git /root/dotfiles; \
-    chmod a+x /root/dotfiles/install.sh; \
-    /root/dotfiles/install.sh; \
-  fi
-
 # Install fzf
 RUN if [ "${INSTALL_DEV_ENV}" = "true" ]; then \
     git clone --depth 1 https://github.com/junegunn/fzf.git /root/fzf; \
     /root/fzf/install --key-bindings --completion --update-rc; \
+  fi
+
+# Install dotfiles
+RUN if [ "${INSTALL_DEV_ENV}" = "true" ]; then \
+    git config --global url."https://github.com/".insteadOf "git@github.com:" && \
+    git clone --recurse-submodules https://github.com/stasdelen/dotfiles.git /root/dotfiles && \
+    cd /root/dotfiles && \
+    git submodule update --init --recursive && \
+    chmod a+x /root/dotfiles/install.sh && \
+    /root/dotfiles/install.sh; \
   fi
 
 # Setup neovim packages
