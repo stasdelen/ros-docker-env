@@ -72,7 +72,7 @@ RUN if [ "${INSTALL_DEV_ENV}" = "true" ]; then \
 
 # Install dotfiles
 RUN if [ "${INSTALL_DEV_ENV}" = "true" ]; then \
-    git clone --resursive https://github.com/stasdelen/dotfiles.git /root/dotfiles; \
+    git clone --recurse-submodules https://github.com/stasdelen/dotfiles.git /root/dotfiles; \
     chmod a+x /root/dotfiles/install.sh; \
     /root/dotfiles/install.sh; \
   fi
