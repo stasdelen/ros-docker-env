@@ -5,6 +5,7 @@ compile_commands.json
 # Ignore contents of workspace
 workspace/*
 !workspace/Makefile
+!workspace/.clangd
 # Ignore contents of config
 config/*
 !config/config

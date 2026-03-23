@@ -1,0 +1,27 @@
+CompileFlags:
+  Add:
+    - -isystem
+    - /usr/lib/gcc/x86_64-linux-gnu/7/include
+  BuiltinHeaders: QueryDriver
+Diagnostics:
+  CompileFlags:
+    Add: [-Wall, -Wextra, -Wpedantic]
+  ClangTidy:
+    Add:
+      - "modernize*"
+      - "cppcoreguidelines*"
+      - "bugprone*"
+      - "performance*"
+      - "readability*"
+      - "google*"
+    Remove:
+      - "modernize-use-trailing-return-type"
+      - "modernize-use-nodiscard"
+      - "bugprone-too-small-loop-variable"
+      - "bugprone-easily-swappable-parameters"
+      - "cppcoreguidelines-avoid-magic-numbers"
+      - "cppcoreguidelines-avoid-do-while"  # ROS log
+      - "cppcoreguidelines-pro-type-vararg" # ROS log
+      - "readability-magic-numbers"
+      - "readability-function-cognitive-complexity" # (i.e. skill issue)
+      - "readability-identifier-length"
