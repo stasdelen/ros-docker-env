@@ -21,12 +21,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install clang tools (clangd for LSP, clang-format for formatting)
 RUN apt-get update && apt-get install -y --no-install-recommends gnupg wget \
     && wget -qO - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - \
-    && echo "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-14 main" > /etc/apt/sources.list.d/llvm-14.list \
+    && echo "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-19 main" > /etc/apt/sources.list.d/llvm-19.list \
     && apt-get update && apt-get install -y --no-install-recommends \
-    clangd-14 \
-    clang-format-14 \
-    && ln -sf /usr/bin/clangd-14 /usr/bin/clangd \
-    && ln -sf /usr/bin/clang-format-14 /usr/bin/clang-format \
+    clangd-19 \
+    clang-format-19 \
+    && ln -sf /usr/bin/clangd-19 /usr/bin/clangd \
+    && ln -sf /usr/bin/clang-format-19 /usr/bin/clang-format \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install visualization tools
